@@ -1,0 +1,22 @@
+parameters:
+  version: '1.0.0'
+
+services:
+  _defaults:
+    autowire: true
+    bind:
+      string $version: '%version%'
+      string $cloudflareApiToken: '%env(CLOUDFLARE_API_TOKEN)%'
+
+  Remg\:
+    lazy: true
+    resource: '../src'
+
+  _instanceof:
+    Symfony\Component\Console\Command\Command:
+      tags: ['command']
+
+  Remg\Application:
+    public: true
+    arguments:
+      - !tagged command

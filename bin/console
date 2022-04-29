@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use Remg\Application;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Dotenv\Dotenv;
+
+set_time_limit(0);
+
+require __DIR__.'/../vendor/autoload.php';
+
+(new Dotenv())->loadEnv(__DIR__.'/../.env');
+
+$container = new ContainerBuilder();
+
+$loader = new YamlFileLoader($container, new FileLocator());
+$loader->load(__DIR__.'/../config/services.yml');
+
+$container->compile(true);
+
+exit($container->get(Application::class)->run());
